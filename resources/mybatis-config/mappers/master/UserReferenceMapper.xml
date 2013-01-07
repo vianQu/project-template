@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <!--set mapping/dao module interface-->
+<mapper namespace="project.master.mapper.UserReferenceMapper">
+
+    <sql id="columnUserReference">
+        user_ref_id as userRefId,
+        group as group,
+        detail_data as detailData
+    </sql>
+
+    <insert id="insertUserReference" parameterType="UserReference">
+        insert into app_default.m_user_reference(
+            user_ref_id,
+            group,
+            detail_data,
+            flag,
+            created_by,
+            created_date,
+            last_update,
+            lokasi_id
+        ) values (
+            #{userRefId),
+            #(group),
+            #(detailData),
+            'Y',
+            #{userName},
+            now(),
+            now(),
+            #{lokasiId}
+        )
+    </insert>
+
+    <update id="updatetUserReference" parameterType="UserReference">
+        update app_default.m_user_reference set
+            group=#{group},
+            detail_data=#{detailData},
+            last_update=now(),
+            update_by = #{userName}
+        where
+            user_ref_id = #{userRefId}
+        and
+            flag='Y'
+    </update>
+
+    <update id="deleteUserReference" parameterType="UserReference">
+        update app_default.m_user_reference set
+            flag = 'N'
+        where
+            user_ref_id = #{userRefId}
+        and
+            flag='Y'
+    </update>
+
+    <select id="getCountUserReference" parameterType="UserReference" resultType="int">
+        select
+            count(*)
+        from
+            app_default.m_user_reference
+        where
+            group=#{group}
+        and
+            detail_data = #{detailData}
+        and
+            flag='Y'
+    </select>
+
+    <select id="getAllUserReference" resultType="UserReference">
+        select
+           <include refid="columnUserReference"/>
+        from
+            app_default.m_user_reference
+        where
+            flag='Y'
+    </select>
+
+
+</mapper>

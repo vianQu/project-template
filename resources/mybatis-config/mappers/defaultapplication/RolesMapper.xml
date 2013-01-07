@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.defaultapplication.role.mapper.RolesMapper">
+
+    <sql id="columnRoles">
+        role_id as roleId,
+        role_name as roleName,
+        user_id as userId
+    </sql>
+
+    <insert id="insertRoles" parameterType="Roles">
+
+        insert into
+        app_default.m_roles(
+            m_roles.role_name,
+            m_roles.flag,
+            m_roles.user_name,
+            m_roles.work_station,
+            m_roles.lokasi_id,
+            m_roles.last_update,
+            m_roles.created_date,
+            m_roles.created_by
+        )values(
+            #{roleName},
+            'Y',
+            #{userName},
+            #{workStation},
+            #{lokasiId},
+            now(),
+            now(),
+            #{createdBy}
+        )
+
+    </insert>
+    
+    <update id="updatetRoles" parameterType="Roles">
+        update
+            app_default.m_roles
+        set
+            m_roles.role_name = #{roleName},
+            m_roles.user_name = #{userName},
+            m_roles.work_station = #{workStation},
+            m_roles.lokasi_id = #{lokasiId},
+            m_roles.last_update = now(),
+            m_roles.update_by = #{userName}
+        where
+            m_roles.role_name = #{roleId}
+    </update>
+    
+    <update id="deleteRoles" parameterType="Roles">
+
+        update
+            app_default.m_roles
+        set
+            flag = 'N'
+        where
+            m_role.role_id = #{roleId}
+        
+    </update>
+    
+    <select id="getAllRoles" resultType="Roles">
+        select
+            <include refid="columnRoles"/>
+        from
+            app_default.m_roles
+        where
+            flag = 'Y'
+    </select>
+
+    <select id="getListRolesByUserId" parameterType="String" resultType="Roles">
+        select
+            <include refid="columnRoles"/>
+        from
+            app_default.m_roles
+        where
+            flag = 'Y'
+        and
+            user_id = #{value}
+    </select>
+
+    <select id="getListUserRolesByObjectUser" parameterType="User" resultType="Roles">
+        select
+            a.role_id as roleId
+        from
+            app_default.m_users_roles a
+        left join
+            app_default.m_roles b
+        on
+            a.role_id=b.role_id
+        where
+            a.user_id = #{userId} and b.flag='Y'
+    </select>
+
+    <select id="getRoleById" parameterType="String" resultType="Roles">
+        select
+            <include refid="columnRoles"/>
+        from
+            app_default.m_roles
+        where
+            flag = 'Y'
+        and
+            user_id = #{value}
+    </select>
+    
+    <select id="getSearchRoles" parameterType="java.util.Map" resultType="Roles">
+        select
+            <include refid="columnRoles"/>
+        from
+            app_default.m_roles
+        where
+            flag = 'Y'
+        and
+            role_name like #{roleName}
+    </select>
+
+    <select id="getCountRolesByName" resultType="int" parameterType="String">
+        select
+            count(*)
+        from
+            app_default.m_roles
+        where
+            flag = 'Y'
+        and
+            role_name like #{value}
+
+    </select>
+
+</mapper>

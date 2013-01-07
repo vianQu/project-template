@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="cacheEnabled" value="false"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
+        <setting name="useGeneratedKeys" value="true"/>
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <setting name="safeRowBoundsEnabled" value="false"/>
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <setting name="localCacheScope" value="SESSION"/>
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+
+    <typeAliases>
+        <typeAlias alias="String" type="java.lang.String"/>
+        <typeAlias alias="User" type="project.defaultapplication.user.model.User"/>
+        <typeAlias alias="Function" type="project.defaultapplication.menufunction.model.Function"/>
+        <typeAlias alias="Roles" type="project.defaultapplication.role.model.Roles"/>
+        <typeAlias alias="UserReference" type="project.master.model.UserReference"/>
+        <typeAlias alias="Sequence" type="project.master.model.Sequence"/>
+    </typeAliases>
+    <!--di coment karena di cinfigure di spring-->
+    <!--<environments default="development">-->
+        <!--<environment id="development">-->
+            <!--<transactionManager type="JDBC"/>-->
+            <!--<dataSource type="POOLED">-->
+                <!--<property name="driver" value="${driver}"/>-->
+                <!--<property name="url" value="${url}"/>-->
+                <!--<property name="username" value="${username}"/>-->
+                <!--<property name="password" value="${password}"/>-->
+            <!--</dataSource>-->
+        <!--</environment>-->
+    <!--</environments>-->
+    <mappers>
+        <mapper resource="/mybatis-config/mappers/defaultapplication/UserMapper.xml"/>
+        <mapper resource="/mybatis-config/mappers/defaultapplication/FunctionsMapper.xml"/>
+        <mapper resource="/mybatis-config/mappers/defaultapplication/RolesMapper.xml"/>
+        <mapper resource="/mybatis-config/mappers/master/UserReferenceMapper.xml"/>
+        <mapper resource="/mybatis-config/mappers/master/SequenceMapper.xml"/>
+    </mappers>
+</configuration>

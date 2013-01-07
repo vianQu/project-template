@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.defaultapplication.menufunction.dao.FunctionMapper">
+
+    <!--define function columns-->
+    <sql id="functionColumns">
+        funct_id,
+        funct_name,
+        url,
+        menu,
+        parent,
+        role_id,
+        work_station,
+        lokasi_id,
+        printer_id
+    </sql>
+
+    <insert id="insertFunctions" parameterType="Function">
+        insert into app_default.m_functions(
+            funct_name,
+            url,
+            menu,
+            parent,
+            role_id,
+            flag,
+            work_station,
+            lokasi_id,
+            last_update,
+            created_by,
+            printer_id
+        ) values (
+            #{functName},
+            #{url},
+            #{menu},
+            #{parent},
+            #{roleId},
+            #{flag},
+            #{workStation},
+            #{lokasiId},
+            now(),
+            #{userName},
+            #{printerId}
+        )
+    </insert>
+
+    <update id="updateFunctions" parameterType="Function">
+        update
+            app_default.m_functions
+        set
+            funct_name=#{functName},
+            url=#{url},
+            menu=#{menu},
+            parent=#{parent},
+            role_id=#{roleId},
+            work_station=#{workStation},
+            lokasi_id=#{lokasiId},
+            last_update=now(),
+            update_by = #{userName},
+            printer_id=#{printerId}
+        where
+            func_id=#{functId}
+        and
+            flag='Y'
+    </update>
+
+    <update id="deleteFunctions" parameterType="Function">
+        update
+            app_default.m_functions
+        set
+            flag='N'
+        where
+            func_id=#{functId}
+        and
+            flag='Y'
+    </update>
+
+    <select id="getSearchFunction" parameterType="java.util.Map" resultType="Function">
+        SELECT
+            <include refid="functionColumns"/>
+        FROM
+            app_default.m_functions
+        WHERE
+            funct_name like #{functName}
+        OR
+            url like #{url}
+        AND
+            flag='Y';
+    </select>
+
+    <select id="getFunctionById" parameterType="java.lang.String" resultType="Function">
+        SELECT
+            <include refid="functionColumns"/>
+        FROM
+            app_default.m_functions
+        WHERE
+            funct_id=#{value}
+        AND
+            flag='Y';
+    </select>
+
+    <select id="getAllFunction" resultType="Function">
+        SELECT
+            <include refid="functionColumns"/>
+        FROM
+            app_default.m_functions
+        WHERE
+            flag='Y';
+    </select>
+
+    <select id="getParentLevelFunction" parameterType="java.lang.String" resultType="Function">
+        select distinct
+            funct_level
+        from
+            app_default.m_functions
+        where
+            menu like #{functId}
+    </select>
+
+    <select id="getMenuByRoleId" resultType="Function" parameterType="list">
+        select
+            <include refid="functionColumns"/>
+        from
+            app_default.m_functions
+        where
+            menu > 0 /* get yang hanya memiliki menu, ini artinya function yang di set sebagai menu. */
+        and
+            flag='Y'
+        and
+            role_id
+        IN
+            <foreach collection="list" open="(" separator="," close=")" index="index" item="listOfRoleIdItem">
+                #{listOfRoleIdItem, jdbcType=BIGINT}
+            </foreach>
+        order by
+            funct_id
+    </select>
+
+    <select id="getMenuByRoleIdMap" parameterType="java.util.Map" resultType="Function">
+        select
+            <include refid="functionColumns"/>
+        from
+            app_default.m_functions
+        where
+            menu is not null
+        and
+            flag='Y'
+        and
+            role_id
+        IN
+            <foreach collection="listOfRoleId" open="(" separator="," close=")" index="index" item="listOfRoleIdItem">
+                #{listOfRoleIdItem, jdbcType=BIGINT}
+            </foreach>
+        order by
+            funct_id
+    </select>
+
+    <select id="getCountFunctionId" parameterType="java.util.Map" resultType="int">
+        select
+            count(*) as value
+        from
+            app_default.m_functions
+        where
+            menu like #{menuId}
+        and
+            flag='Y'
+    </select>
+
+    <select id="getCountChildFunction" parameterType="java.util.Map" resultType="int">
+        select
+            count(*) as value
+        from
+            app_default.m_functions
+        where
+            parent = (
+                        select
+                            menu
+                        from
+                            app_default.m_functions
+                        where
+                            funct_id like #{parentId}
+                        and flag='Y'
+                     )
+        and flag='Y'
+    </select>
+
+    <select id="getCountMenuByName" parameterType="Function" resultType="int">
+        select
+            count(*) as value
+        from
+            app_default.m_functions
+        where
+            function_name like #{functName}
+        and
+            flag='Y'
+    </select>
+
+    <select id="getCountMenuId" parameterType="java.util.Map" resultType="int">
+        select
+            count(*) as value
+        from
+            app_default.m_functions
+        where
+            menu like #{menuId}
+        and
+            flag='Y'
+    </select>
+
+    <select id="getCountFunctionURL" parameterType="java.util.Map" resultType="int">
+        select
+            count(*)
+        from
+            app_default.m_functions
+        WHERE
+            role_id
+        IN
+             <foreach item="itemList" collection="listOfRoleId">
+                  #{itemList}
+             </foreach>
+        and
+            flag='Y'
+
+    </select>
+
+    <select id="getPrinterNamebyFunctionsURL" parameterType="java.util.Map" resultType="int">
+        select
+            b.printer_name as value
+        from
+            app_default.m_functions a
+        left join
+            app_default.m_printer b
+        ON
+            a.printer_id=b.printer_id
+        where
+            a.url = #{url}
+        and
+            a.flag='Y'
+        and
+            b.flag='Y'
+        in
+        <foreach item="itemsRoleId" collection="listOfRoleId">
+            a.role_id=#{itemsRoleId}
+        </foreach>
+    </select>
+    
+</mapper>

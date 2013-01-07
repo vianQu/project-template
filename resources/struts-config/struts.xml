@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="project" extends="struts-default" namespace="/">
+
+        <global-results>
+            <result name="login">/page/defaultapp/user/login.jsp</result>
+        </global-results>
+
+        <action name="template">
+            <result name="success">/page/defaultapp/template.jsp</result>
+        </action>
+
+        <!--global function-->
+        <action name="login" class="project.defaultapplication.user.action.UserAction" method="doLogin">
+            <result name="error">/page/defaultapp/authorization/login.jsp</result>
+            <result name="input">/page/defaultapp/authorization/login.jsp</result>
+            <result name="success">/page/defaultapp/mainContentDefault.jsp</result>
+        </action>
+       <!--for paging template-->
+        <action name="logout" class="project.defaultapplication.user.action.UserAction" method="doLogout">
+            <result name="success">/page/defaultapp/authorization/login.jsp</result>
+            <result name="input">/page/defaultapp/authorization/login.jsp</result>
+            <result name="wait">/page/defaultapp/user/waitPage.jsp</result>
+            <result name="error">/page/defaultapp/authorization/login.jsp</result>
+        </action>
+
+    </package>
+
+    <include file="action/defaultapplication/UserAction.xml"/>
+    <include file="action/defaultapplication/FunctionAction.xml"/>
+    <include file="action/defaultapplication/RolesAction.xml"/>
+    <include file="action/master/UserReferenceAction.xml"/>
+</struts>

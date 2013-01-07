@@ -1,0 +1,34 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="project.defaultapplication.role" extends="struts-default" namespace="/roles">
+
+        <interceptors>
+            <interceptor name="authorization"
+                         class="project.common.interceptor.AuthorizeInterceptor"/>
+
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="authorization"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <action name="roles" class="project.defaultapplication.role.action.RolesAction">
+            <result name="success">/page/defaultapp/roles/mainRole.jsp</result>
+            <result name="error">/page/defaultapp/roles/mainRole.jsp</result>
+            <result name="input">/page/defaultapp/roles/mainRole.jsp</result>
+        </action>
+
+        <action name="insertRole" class="project.defaultapplication.role.action.RolesAction" method="saveRoles">
+            <result name="success">/page/defaultapp/roles/insertRole.jsp</result>
+            <result name="error">/page/defaultapp/roles/insertRole.jsp</result>
+            <result name="input">/page/defaultapp/roles/insertRole.jsp</result>
+        </action>
+
+
+
+    </package>
+</struts>

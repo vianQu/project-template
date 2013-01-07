@@ -1,0 +1,71 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="project.master.UserReference" extends="struts-default" namespace="/userReference">
+
+        <interceptors>
+            <interceptor name="authorization"
+                         class="project.common.interceptor.AuthorizeInterceptor"/>
+
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="authorization"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <action name="userReference">
+            <result name="success">/page/module/name/package/mainModuleName.jsp</result>
+            <result name="error">/page/module/name/package/mainModuleName.jsp</result>
+            <result name="input">/page/module/name/package/mainModuleName.jsp</result>
+            <result name="insert">/page/module/name/package/mainModuleName.jsp</result>
+        </action>
+
+        <action name="insertUserReference" class="project.master.action.UserReferenceAction" method="insertUserReference">
+            <!-- interceptor disini berguna untuk selalu cek apakah user masih 
+            login atau tidak dan mengecek CRUD hak aksesnya -->
+            <interceptor-ref name="authStack"/>
+            <result name="success">/page/module/name/package/insertModuleName.jsp</result>
+            <result name="error">/page/module/name/package/insertModuleName.jsp</result>
+            <result name="input">/page/module/name/package/insertModuleName.jsp</result>
+        </action>
+
+        <action name="updateUserReference" class="project.master.action.UserReferenceAction" method="updateUserReference">
+            <!-- interceptor disini berguna untuk selalu cek apakah user masih 
+            login atau tidak dan mengecek CRUD hak aksesnya -->
+            <interceptor-ref name="authStack"/>
+            <result name="success">/page/module/name/package/updateModuleName.jsp</result>
+            <result name="error">/page/module/name/package/updateModuleName.jsp</result>
+            <result name="input">/page/module/name/package/updateModuleName.jsp</result>
+        </action>
+
+        <action name="deleteUserReference" class="project.master.action.UserReferenceAction" method="deleteUserReference">
+            <!-- interceptor disini berguna untuk selalu cek apakah user masih 
+            login atau tidak dan mengecek CRUD hak aksesnya -->
+            <interceptor-ref name="authStack"/>
+            <result name="success">/page/module/name/package/deleteModuleName.jsp</result>
+            <result name="error">/page/module/name/package/deleteModuleName.jsp</result>
+            <result name="input">/page/module/name/package/deleteModuleName.jsp</result>
+        </action>
+
+        <!-- to initialize page for edit or delete page  -->
+        <action name="initUserReference" class="project.master.action.UserReferenceAction" method="initUserReference">
+            <result name="success">/page/module/name/package/deleteModuleName.jsp</result>
+            <result name="error">/page/module/name/package/deleteModuleName.jsp</result>
+            <result name="input">/page/module/name/package/deleteModuleName.jsp</result>
+        </action>
+        <action name="initDeleteUserReference" class="project.master.action.UserReferenceAction" method="initUserReference">
+            <result name="success">/page/module/name/package/deleteModuleName.jsp</result>
+            <result name="error">/page/module/name/package/deleteModuleName.jsp</result>
+            <result name="input">/page/module/name/package/deleteModuleName.jsp</result>
+        </action>
+        <action name="initEditUserReference" class="project.master.action.UserReferenceAction" method="initUserReference">
+            <result name="success">/page/module/name/package/updateModuleName.jsp</result>
+            <result name="error">/page/module/name/package/updateModuleName.jsp</result>
+            <result name="input">/page/module/name/package/updateModuleName.jsp</result>
+        </action>
+
+    </package>
+</struts>

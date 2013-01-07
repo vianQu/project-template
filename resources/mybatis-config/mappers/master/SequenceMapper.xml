@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--set mapping/dao module interface-->
+<mapper namespace="project.master.mapper.SequenceMapper">
+    <!--set mapping/dao module interface-->
+    <sql id="columnSequence">
+        seq_name,
+        seq_value,
+        user_name
+    </sql>
+
+    <insert id="insertSequence" parameterType="Sequence">
+        insert into master.s_sequence(
+            seq_name,
+            seq_value,
+            created_by,
+            created_date,
+            lokasi_id )
+        values (
+            #{seqName},
+            #{seqValue},
+            #{userName},
+            now(),
+            #{likasiId}
+        )
+    </insert>
+
+    <update id="updatetSequence" parameterType="Sequence">
+        update
+            master.s_sequence
+        set
+            seq_value=#{seqValue},
+            update_by=#{userName},
+            last_update=now(),
+        where
+            seq_name=#{seqName}
+        and
+            flag='Y'
+    </update>
+
+    <update id="deleteSequence" parameterType="Sequence">
+        update
+            master.s_sequence
+        set
+            flag='N',
+            delete_by=#{userName},
+            last_update=now(),
+        where
+            seq_name=#{seqName}
+    </update>
+
+    <select id="getAllSequence" resultType="Sequence">
+        select
+            <include refid="columnSequence"/>
+        from
+            master.s_sequence
+        where
+            flag = 'Y'
+    </select>
+
+    <select id="getSequenceByObject" parameterType="Sequence" resultType="Sequence">
+        select
+            <include refid="columnSequence"/>
+        from
+            master.s_sequence
+        where
+            flag = 'Y'
+        and
+            seq_name=#{seqName}
+    </select>
+
+    <select id="getSequenceByNameSeq" parameterType="String" resultType="Sequence">
+        select
+            <include refid="columnSequence"/>
+        from
+            master.s_sequence
+        where
+            flag = 'Y'
+        and
+            seq_name=#{value}
+    </select>    
+
+    <select id="getCountSequence" parameterType="Sequence" resultType="int">
+        select
+            count(*)
+        from
+            master.s_sequence
+        where
+            seq_name=#{seqName}
+        and
+            flag='Y'
+    </select>
+
+
+</mapper>

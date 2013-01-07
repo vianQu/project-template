@@ -1,0 +1,74 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="project.master" extends="struts-default" namespace="/sequence">
+
+        <interceptors>
+            <interceptor name="authorization"
+                         class="project.common.interceptor.AuthorizeInterceptor"/>
+
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="authorization"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <action name="sequence_*">
+            <result name="success">/page/defaultapplication/master/sequence/mainSequence.jsp</result>
+            <result name="error">/page/defaultapplication/master/sequence/mainSequence.jsp</result>
+            <result name="input">/page/defaultapplication/master/sequence/mainSequence.jsp</result>
+            <result name="main">/page/defaultapplication/master/sequence/mainSequence.jsp</result>
+            <result name="add">/page/defaultapplication/master/sequence/addSequence.jsp</result>
+        </action>
+
+        <action name="insertSequence" class="project.master.action.SequenceAction" method="insertSequence">
+            <!-- interceptor disini berguna untuk selalu cek apakah user masih 
+            login atau tidak dan mengecek CRUD hak aksesnya -->
+            <interceptor-ref name="authStack"/>
+            <result name="success">/page/defaultapplication/master/sequence/addSequence.jsp</result>
+            <result name="error">/page/defaultapplication/master/sequence/addSequence.jsp</result>
+            <result name="input">/page/defaultapplication/master/sequence/addSequence.jsp</result>
+        </action>
+
+        <action name="updateSequence" class="project.master.action.SequenceAction" method="updateSequence">
+            <!-- interceptor disini berguna untuk selalu cek apakah user masih 
+            login atau tidak dan mengecek CRUD hak aksesnya -->
+            <interceptor-ref name="authStack"/>
+            <result name="success">/page/defaultapplication/master/sequence/updateSequence.jsp</result>
+            <result name="error">/page/defaultapplication/master/sequence/updateSequence.jsp</result>
+            <result name="input">/page/defaultapplication/master/sequence/updateSequence.jsp</result>
+        </action>
+
+        <action name="deleteSequence" class="project.master.action.SequenceAction" method="deleteSequence">
+            <!-- interceptor disini berguna untuk selalu cek apakah user masih 
+            login atau tidak dan mengecek CRUD hak aksesnya -->
+            <interceptor-ref name="authStack"/>
+            <result name="success">/page/defaultapplication/master/sequence/deleteSequence.jsp</result>
+            <result name="error">/page/defaultapplication/master/sequence/deleteSequence.jsp</result>
+            <result name="input">/page/defaultapplication/master/sequence/deleteSequence.jsp</result>
+        </action>
+
+        <!-- to initialize page for edit or delete page  -->
+        <action name="initEditSequence" class="project.module.name.package.action.ModuleAction" method="initSequence">
+            <result name="success">/page/module/name/package/updateSequence.jsp</result>
+            <result name="error">/page/module/name/package/updateSequence.jsp</result>
+            <result name="input">/page/module/name/package/updateSequence.jsp</result>
+        </action>
+
+        <action name="initDeleteSequence" class="project.module.name.package.action.ModuleAction" method="initSequence">
+            <result name="success">/page/module/name/package/deleteModuleName.jsp</result>
+            <result name="error">/page/module/name/package/deleteModuleName.jsp</result>
+            <result name="input">/page/module/name/package/deleteModuleName.jsp</result>
+        </action>
+
+        <action name="initViewSequence" class="project.module.name.package.action.ModuleAction" method="initSequence">
+            <result name="success">/page/module/name/package/viewSequence.jsp</result>
+            <result name="error">/page/module/name/package/viewSequence.jsp</result>
+            <result name="input">/page/module/name/package/viewSequence.jsp</result>
+        </action>
+
+    </package>
+</struts>

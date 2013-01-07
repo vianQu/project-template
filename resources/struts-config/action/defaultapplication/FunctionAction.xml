@@ -1,0 +1,71 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="function" extends="struts-default" namespace="/function">
+        <interceptors>
+            <interceptor name="authorization"
+                         class="project.common.interceptor.AuthorizeInterceptor"/>
+
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="authorization"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <global-results>
+            <result name="login">/page/defaultapp/user/login.jsp</result>
+        </global-results>
+
+        <action name="functions_*" class="project.defaultapplication.menufunction.action.FunctionAction" method="{1}">
+            <result name="input">/page/defaultapp/menufunction/functionMain.jsp</result>
+            <result name="success">/page/defaultapp/menufunction/functionMain.jsp</result>
+            <result name="error">/page/defaultapp/menufunction/functionMain.jsp</result>
+        </action>
+        
+        <action name="initAdd">
+            <interceptor-ref name="authorization"/>
+            <result name="input">/page/defaultapp/menufunction/functionAdd.jsp</result> 
+            <result name="success">/page/defaultapp/menufunction/functionAdd.jsp</result> 
+        </action>
+
+        <action name="addFunction" class="project.defaultapplication.menufunction.action.FunctionAction" method="doAddFunction">
+            <interceptor-ref name="authorization"/>
+            <result name="input">/page/defaultapp/menufunction/functionAdd.jsp</result>
+            <result name="error">/page/defaultapp/menufunction/functionAdd.jsp</result>
+            <result name="success">/page/defaultapp/menufunction/functionAdd.jsp</result>
+        </action>
+
+        <action name="initEditFunction" class="project.defaultapplication.menufunction.action.FunctionAction" method="doInit">
+            <interceptor-ref name="authorization"/>
+            <result name="input">/page/defaultapp/menufunction/functionEdit.jsp</result>
+            <result name="error">/page/defaultapp/menufunction/functionEdit.jsp</result>
+            <result name="success">/page/defaultapp/menufunction/functionEdit.jsp</result>
+        </action>
+
+        <action name="editFunction" class="project.defaultapplication.menufunction.action.FunctionAction" method="doEdit">
+            <interceptor-ref name="authorization"/>
+            <result name="input">/page/defaultapp/menufunction/functionEdit.jsp</result>
+            <result name="error">/page/defaultapp/menufunction/functionEdit.jsp</result>
+            <result name="success">/page/defaultapp/menufunction/functionEdit.jsp</result>
+        </action>
+
+        <action name="initDeleteFunction" class="project.defaultapplication.menufunction.action.FunctionAction" method="doInit">
+            <interceptor-ref name="authorization"/>
+            <result name="input">/page/defaultapp/menufunction/functionDelete.jsp</result>
+            <result name="error">/page/defaultapp/menufunction/functionDelete.jsp</result>
+            <result name="success">/page/defaultapp/menufunction/functionDelete.jsp</result>
+        </action>
+
+        <action name="deleteFunction" class="project.defaultapplication.menufunction.action.FunctionAction" method="doDelete">
+            <interceptor-ref name="authorization"/>
+            <result name="input">/page/defaultapp/menufunction/functionDelete.jsp</result>
+            <result name="error">/page/defaultapp/menufunction/functionDelete.jsp</result>
+            <result name="success">/page/defaultapp/menufunction/functionDelete.jsp</result>
+        </action>
+
+    </package>
+
+</struts>
